@@ -10,7 +10,7 @@ st.set_page_config(page_title='PhysioApp',page_icon='💡',menu_items={
 'Report a bug': None
 })
 
-logincread=[["deepayan","BabaMaa"]]
+logincread=[["Admin","Test_Admin"]]
 menu=["Home","image","video"]
 
 def main():
