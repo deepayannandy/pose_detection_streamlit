@@ -85,6 +85,10 @@ def app():
                 st.write("We can not find any detection on Image1")
             if angle2==0:
                 st.write("We can not find any detection on Image2")
+            if angle1>180:
+                angle1=angle1-180
+            if angle2>180:
+                angle2=angle2-180
             else:
                 final_img=transparentOverlay(colage(addtext(detection_image1,date1),addtext(detection_image2,date2)),logo)
                 st.image(final_img)
