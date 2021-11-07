@@ -42,6 +42,8 @@ class poseDetector():
         angel=math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2))
         if angel < 0:
             angel += 360
+        if angel > 180:
+            angel = angel - 180
         #draw angel
         if draw:
             cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 4)

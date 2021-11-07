@@ -16,14 +16,23 @@ def detection(img,num):
     try:
         if len(lm_list) != 0:
             if num==1:
-                ang = detector.find_angel(img, 12, 14, 16)
+                ang = detector.find_angel(img, 16, 14, 12)
             elif num==2:
-                ang = detector.find_angel(img, 11, 13, 15)
+                ang = detector.find_angel(img, 15, 13, 11)
             elif num==3:
-                ang = detector.find_angel(img, 24, 26, 28)
+                ang = detector.find_angel(img, 28, 26, 24)
             elif num==4:
-                ang = detector.find_angel(img, 23, 25, 27)
+                ang = detector.find_angel(img, 27, 25, 23)
+            elif num==5:
+                ang = detector.find_angel(img, 14, 12, 24)
+            elif num==6:
+                ang = detector.find_angel(img, 13, 11, 23)
+            elif num==7:
+                ang = detector.find_angel(img, 26, 24, 12)
+            elif num==8:
+                ang = detector.find_angel(img, 25, 23, 11)
     except:
+        print("Something went wrong")
         pass
     return img_get,int(ang)
 def colage(img1, img2):
@@ -38,13 +47,6 @@ def colage(img1, img2):
     vis[:h2, w1:w1 + w2, :3] = img2
     return vis
 def transparentOverlay(src, overlay, pos=(0, 0), scale=.2):
-    """
-    :param src: Input Color Background Image
-    :param overlay: transparent Image (BGRA)
-    :param pos:  position where the image to be blit.
-    :param scale : scale factor of transparent image.
-    :return: Resultant Image
-    """
     overlay = cv2.resize(overlay, (0, 0), fx=scale, fy=scale)
     h, w, _ = overlay.shape  # Size of foreground
     rows, cols, _ = src.shape  # Size of background Image
@@ -60,16 +62,22 @@ def transparentOverlay(src, overlay, pos=(0, 0), scale=.2):
 def addtext(image,text):
     h,w,_=image.shape
     font = cv2.FONT_HERSHEY_SIMPLEX
-    org = (0, w-20)
-    fontScale = 1
+    print(int(w*.001))
+    org = (0, w-int(w*.1))
+    fontScale = int(w*.001)
+    if fontScale<1:
+        fontScale=1
     color = (255, 0, 0)
-    thickness = 2
+    thickness = 4
     image = cv2.putText(image, 'Date:'+str(text), org, font, fontScale, color, thickness, cv2.LINE_AA)
     return image
-detections=['Left elbow','Right elbow','Left knee','right knee']
-nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4}
+detections=['Left elbow','Right elbow','Left knee','Right knee','Left solder','Right solder','Left hip','Right hip']
+nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left solder':5,'Right solder':6,'Left hip':7,'Right hip':8}
 def app():
     st.header("Physio App: Improvement using Image")
+    pname = st.text_input("Patients name")
+    paddress = st.text_input("Patients Address")
+    pcontact = st.text_input("Patients Contact")
     detection_on=st.selectbox("Body part",detections)
     e_ang=st.number_input("Expected Angel",min_value=1)
     file_image1 = st.file_uploader("Upload Image1",type=['jpeg','jpg','png'])
@@ -85,16 +93,16 @@ def app():
                 st.write("We can not find any detection on Image1")
             if angle2==0:
                 st.write("We can not find any detection on Image2")
-            if angle1>180:
-                angle1=angle1-180
-            if angle2>180:
-                angle2=angle2-180
             else:
                 final_img=transparentOverlay(colage(addtext(detection_image1,date1),addtext(detection_image2,date2)),logo)
                 st.image(final_img)
-                st.write(" Generated Angel in image1 is is : {} ° or {} % of the expected angel".format(angle1,int((angle1/e_ang)*100)))
-                st.write(" Generated Angel in image1 is is : {} ° or {} % of the expected angel".format(angle2,int((angle2/e_ang)*100)))
-                st.write("### Overall improvement is: {} %".format((int((angle2/e_ang)*100)-int((angle1/e_ang)*100))))
+                a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {}".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
+                b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {}".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
+                c=" Overall improvement is: {} %".format((int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
+                st.write(a)
+                st.write(b)
+                st.write("##"+c)
+                st.markdown(gr.get_report("Omphalos Birj Cooperation","12A Dwarika Puri Mathura -281001 Phone:+91 8826366007",pname,paddress,pcontact,detection_on,[a,b,c]), unsafe_allow_html=True)
         except:
             st.write("Something Went Wrong!")
 

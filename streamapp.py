@@ -5,7 +5,7 @@ from apps import home,image,video
 import os
 base_path=os.getcwd()
 st.set_page_config(page_title='PhysioApp',page_icon='💡',menu_items={
-'About': "An ML based Physio therapy improvement monitoring app by DNYIndia",
+'About': "An ML based Physio therapy improvement monitoring app by Omphalos Birj Cooperation",
 'Get help': "http://www.dnyindia.in",
 'Report a bug': None
 })
