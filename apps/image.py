@@ -62,7 +62,6 @@ def transparentOverlay(src, overlay, pos=(0, 0), scale=.2):
 def addtext(image,text):
     h,w,_=image.shape
     font = cv2.FONT_HERSHEY_SIMPLEX
-    print(int(w*.001))
     org = (0, w-int(w*.1))
     fontScale = int(w*.001)
     if fontScale<1:
