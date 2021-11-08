@@ -97,7 +97,7 @@ def app():
                 st.image(final_img)
                 a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
                 b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
-                c=" Overall improvement is: {} %".format((int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
+                c=" Overall improvement is: {} %".format(abs(int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
                 st.write(a)
                 st.write(b)
                 st.write("##"+c)
