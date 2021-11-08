@@ -9,7 +9,7 @@ x = datetime.datetime.now(tz_In)
 print(x.strftime("%I:%M %d/%m/%y"))
 
 
-def get_report(company_name,caddress,Pname,paddress,pcontact,bpart,report_data):
+def get_report(company_name,caddress,Pname,sp,pcontact,bpart,report_data):
     x = datetime.datetime.now(tz_In)
     pdf = FPDF()
     pdf.add_page()
@@ -22,11 +22,9 @@ def get_report(company_name,caddress,Pname,paddress,pcontact,bpart,report_data):
     pdf.set_font('Arial', size=12)
     pdf.cell(0, 10, "Patient Name: " + Pname, align='L',ln=True)
     pdf.set_font('Arial', size=12)
-    pdf.cell(0, 10, "Address: " + paddress, align='L',ln=True)
-    pdf.set_font('Arial', size=12)
     pdf.cell(0, 10, "Contact: " + pcontact,ln=True, align='L')
     pdf.set_font('Arial','U', size=16)
-    pdf.cell(0, 10, "Body Part: " + bpart,border=True, ln=True, align='L')
+    pdf.cell(0, 10, "Body Part: " + bpart+" ("+sp+")",border=True, ln=True, align='L')
     j=0
     for i in report_data:
         pdf.set_font('Arial','B',size=14)

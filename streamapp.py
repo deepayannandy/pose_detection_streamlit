@@ -10,7 +10,7 @@ st.set_page_config(page_title='PhysioApp',page_icon='💡',menu_items={
 'Report a bug': None
 })
 
-logincread=[["Admin","Test_Admin"]]
+logincread=[["Admin","Test_Admin"],["user1","pass1"],["user2","pass2"]]
 menu=["Home","image","video"]
 
 def main():
@@ -33,12 +33,7 @@ def main():
                 st.error("Login first in order to use this tool")
             elif choice == "video":
                 st.error("Login first in order to use this tool")
-        else:
-            if choice == "image":
-                st.error("Login first in order to use this tool")
-            elif choice == "video":
-                st.error("Login first in order to use this tool")
-            st.sidebar.error("Username or Password mismatch!")
+
 
 
 

@@ -75,9 +75,9 @@ nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left sold
 def app():
     st.header("Physio App: Improvement using Image")
     pname = st.text_input("Patients name")
-    paddress = st.text_input("Patients Address")
     pcontact = st.text_input("Patients Contact")
     detection_on=st.selectbox("Body part",detections)
+    sp = st.text_input("Pose")
     e_ang=st.number_input("Expected Angel",min_value=1)
     file_image1 = st.file_uploader("Upload Image1",type=['jpeg','jpg','png'])
     date1 = st.date_input('Image1 date')
@@ -95,13 +95,13 @@ def app():
             else:
                 final_img=transparentOverlay(colage(addtext(detection_image1,date1),addtext(detection_image2,date2)),logo)
                 st.image(final_img)
-                a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {}".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
-                b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {}".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
+                a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
+                b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
                 c=" Overall improvement is: {} %".format((int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
                 st.write(a)
                 st.write(b)
                 st.write("##"+c)
-                st.markdown(gr.get_report("Omphalos Birj Cooperation","12A Dwarika Puri Mathura -281001 Phone:+91 8826366007",pname,paddress,pcontact,detection_on,[a,b,c]), unsafe_allow_html=True)
+                st.markdown(gr.get_report("Omphalos Birj Cooperation","12A Dwarika Puri Mathura -281001 Phone:+91 8826366007",pname,sp,pcontact,detection_on,[a,b,c]), unsafe_allow_html=True)
         except:
             st.write("Something Went Wrong!")
 
