@@ -57,7 +57,6 @@ def app():
                 width = int((frame.shape[1]) / k)
                 height = int((frame.shape[0]) / k)
                 scaled = cv2.resize(detection_image, (width, height), interpolation=cv2.INTER_AREA)
-
                 stframe.image(scaled, channels='BGR', use_column_width=True)
             vid.release()
 
