@@ -9,9 +9,19 @@ st.set_page_config(page_title='PhysioApp',page_icon='💡',menu_items={
 'Get help': "http://www.dnyindia.in",
 'Report a bug': None
 })
+def getUserData():
+    allUserData=[]
+    f = open(base_path+"/staticdata/userdata.txt", 'r')
+    lines = f.readlines()
+    for line in lines:
+        data=str(line).replace('\n','').split('?')
+        allUserData.append(data)
+    print(allUserData)
+    return allUserData
 
-logincread=[["Admin","Test_Admin"],["user1","pass1"],["user2","pass2"]]
+logincread=getUserData()
 menu=["Home","image","video"]
+
 
 def main():
     st.sidebar.title("Enter User Details")
@@ -25,7 +35,7 @@ def main():
         if i[0] == username and i[1] == password:
             st.sidebar.success("Login Successful as {}".format(username))
             if choice == "image":
-                image.app()
+                image.app(i)
             elif choice == "video":
                 video.app()
         elif len(username)<1 or len(username)<1:

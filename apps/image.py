@@ -5,6 +5,10 @@ import pose_module as pm
 from PIL import Image
 import os, numpy
 import generate_report as gr
+import datetime
+import pytz
+tz_In = pytz.timezone('Asia/Kolkata')
+time = datetime.datetime.now(tz_In)
 base_path=os.getcwd()
 
 detector=pm.poseDetector()
@@ -72,9 +76,14 @@ def addtext(image,text):
     return image
 detections=['Left elbow','Right elbow','Left knee','Right knee','Left solder','Right solder','Left hip','Right hip']
 nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left solder':5,'Right solder':6,'Left hip':7,'Right hip':8}
-def app():
+sex=["Male","Female","Others"]
+def app(userdata):
+    userdata=userdata
+    print(userdata)
     st.header("Physio App: Improvement using Image")
     pname = st.text_input("Patients name")
+    choiceS = st.selectbox("Sex", sex)
+    page=st.number_input("Expected Angel",min_value=5)
     pcontact = st.text_input("Patients Contact")
     detection_on=st.selectbox("Body part",detections)
     sp = st.text_input("Pose")
@@ -93,15 +102,17 @@ def app():
             if angle2==0:
                 st.write("We can not find any detection on Image2")
             else:
-                final_img=transparentOverlay(colage(addtext(detection_image1,date1),addtext(detection_image2,date2)),logo)
+                final_img=colage(addtext(detection_image1,date1),addtext(detection_image2,date2))
                 st.image(final_img)
+                imagepath=base_path +"/collection/" +time.strftime("%I:%M-%d-%m-%y")+".png"
+                cv2.imwrite(imagepath, cv2.cvtColor(final_img, cv2.COLOR_RGB2BGR))
                 a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
                 b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
                 c=" Overall improvement is: {} %".format(abs(int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
                 st.write(a)
                 st.write(b)
                 st.write("##"+c)
-                st.markdown(gr.get_report("Omphalos Birj Cooperation","12A Dwarika Puri Mathura -281001 Phone:+91 8826366007",pname,sp,pcontact,detection_on,[a,b,c]), unsafe_allow_html=True)
+                st.markdown(gr.get_report(userdata[2],userdata[5],userdata[3]+" ( "+userdata[4]+") ","Contact: "+userdata[6]+"/ "+userdata[7],pname,sp,choiceS,page,pcontact,detection_on,[a,b,c],imagepath), unsafe_allow_html=True)
         except:
             st.write("Something Went Wrong!")
 
