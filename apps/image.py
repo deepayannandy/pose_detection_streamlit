@@ -79,7 +79,6 @@ nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left sold
 sex=["Male","Female","Others"]
 def app(userdata):
     userdata=userdata
-    print(userdata)
     st.header("Physio App: Improvement using Image")
     pname = st.text_input("Patients name")
     choiceS = st.selectbox("Sex", sex)

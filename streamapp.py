@@ -16,7 +16,6 @@ def getUserData():
     for line in lines:
         data=str(line).replace('\n','').split('?')
         allUserData.append(data)
-    print(allUserData)
     return allUserData
 
 logincread=getUserData()

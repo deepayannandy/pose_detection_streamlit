@@ -52,9 +52,9 @@ def app():
 
             while vid.isOpened():
                 ret, frame = vid.read()
-                detection_image, angle = detection(frame, nums_pos[detection_on])
-                half = cv2.resize(detection_image, (0, 0), fx=0.5, fy=0.5)
-                stframe.image(half, channels='BGR', use_column_width=True)
+                half = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+                detection_image, angle = detection(half, nums_pos[detection_on])
+                stframe.image(detection_image, channels='BGR', use_column_width=True)
             vid.release()
 
 
