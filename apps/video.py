@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import pose_module as pm
 from PIL import Image
+import tempfile
 
 detector=pm.poseDetector()
 def detection(img,num):
@@ -12,24 +13,48 @@ def detection(img,num):
     try:
         if len(lm_list) != 0:
             if num == 1:
-                ang = detector.find_angel(img, 12, 14, 16)
+                ang = detector.find_angel(img, 16, 14, 12)
             elif num == 2:
-                ang = detector.find_angel(img, 11, 13, 15)
+                ang = detector.find_angel(img, 15, 13, 11)
             elif num == 3:
-                ang = detector.find_angel(img, 24, 26, 28)
+                ang = detector.find_angel(img, 28, 26, 24)
             elif num == 4:
-                ang = detector.find_angel(img, 23, 25, 27)
+                ang = detector.find_angel(img, 27, 25, 23)
+            elif num == 5:
+                ang = detector.find_angel(img, 14, 12, 24)
+            elif num == 6:
+                ang = detector.find_angel(img, 13, 11, 23)
+            elif num == 7:
+                ang = detector.find_angel(img, 26, 24, 12)
+            elif num == 8:
+                ang = detector.find_angel(img, 25, 23, 11)
     except:
         pass
     return img_get, int(ang)
-detections=['Left elbow','Right elbow','Left knee','right knee']
-nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4}
+detections=['Left elbow','Right elbow','Left knee','Right knee','Left solder','Right solder','Left hip','Right hip']
+nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left solder':5,'Right solder':6,'Left hip':7,'Right hip':8}
+
 def app():
     st.header("Physio App: Improvement using Video")
     detection_on = st.selectbox("Body part", detections)
     file_video = st.file_uploader("Upload Image", type=['mp4', 'mov'])
+    temp=tempfile.NamedTemporaryFile(delete=False)
     button = st.button("Process")
+    stframe=st.empty()
+    max_ang=0
+    min_ang=0
     if button:
-        st.write("This feature is not enabled yet! \nWe are working on it. Thank you!")
-    else:
-        st.write("Upload a video")
+        if not file_video:
+            st.text("No video Selected")
+        else:
+            temp.write(file_video.read())
+            vid=cv2.VideoCapture(temp.name)
+
+            while vid.isOpened():
+                ret, frame = vid.read()
+                detection_image, angle = detection(frame, nums_pos[detection_on])
+                half = cv2.resize(detection_image, (0, 0), fx=0.5, fy=0.5)
+                stframe.image(half, channels='BGR', use_column_width=True)
+            vid.release()
+
+
