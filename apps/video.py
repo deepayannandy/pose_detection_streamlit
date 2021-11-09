@@ -5,7 +5,7 @@ import pose_module as pm
 from PIL import Image
 import tempfile
 
-detector=pm.poseDetector()
+detector=pm.poseDetector(mode=False)
 def detection(img,num):
     img_get = detector.find_pos(img, False)
     lm_list = detector.find_landmark(img, False)
@@ -52,9 +52,13 @@ def app():
 
             while vid.isOpened():
                 ret, frame = vid.read()
-                half = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-                detection_image, angle = detection(half, nums_pos[detection_on])
-                stframe.image(detection_image, channels='BGR', use_column_width=True)
+                detection_image, angle = detection(frame, nums_pos[detection_on])
+                k = 4
+                width = int((frame.shape[1]) / k)
+                height = int((frame.shape[0]) / k)
+                scaled = cv2.resize(detection_image, (width, height), interpolation=cv2.INTER_AREA)
+
+                stframe.image(scaled, channels='BGR', use_column_width=True)
             vid.release()
 
 

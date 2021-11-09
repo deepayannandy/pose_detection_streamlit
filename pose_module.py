@@ -5,7 +5,7 @@ import os
 
 
 class poseDetector():
-    def __init__(self, mode= True,segment=False, smooth= True, detectionCon=0.5, trackCon=0.5):
+    def __init__(self, mode= True,segment=True, smooth= True, detectionCon=0.5, trackCon=0.5):
         self.mode=mode
         self.segment=segment
         self.smooth=smooth
@@ -13,7 +13,7 @@ class poseDetector():
         self.trackingCon=trackCon
         self.mpDraw = mp.solutions.drawing_utils
         self.mpPose = mp.solutions.pose
-        self.pose = self.mpPose.Pose(self.mode,1,self.smooth,self.segment,True,self.detectionCon,self.trackingCon)
+        self.pose = self.mpPose.Pose(self.mode,1,self.smooth,self.segment,False,self.detectionCon,self.trackingCon)
     def find_pos(self,img,draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.reasults = self.pose.process(imgRGB)
