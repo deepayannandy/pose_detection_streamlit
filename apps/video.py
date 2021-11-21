@@ -6,6 +6,18 @@ from PIL import Image
 import tempfile
 
 detector=pm.poseDetector(mode=False)
+def addtext(image,text):
+    h,w,_=image.shape
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    org = (20, w-int(w*.5))
+    print(org)
+    fontScale = int(w*.001)
+    if fontScale<1:
+        fontScale=1
+    color = (255, 0, 0)
+    thickness = 4
+    image = cv2.putText(image,str(text), org, font, fontScale, color, thickness, cv2.LINE_AA)
+    return image
 def detection(img,num):
     img_get = detector.find_pos(img, False)
     lm_list = detector.find_landmark(img, False)
@@ -37,6 +49,7 @@ nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left sold
 def app():
     st.header("Physio App: Improvement using Video")
     detection_on = st.selectbox("Body part", detections)
+    e_ang = st.number_input("Max movement Angel", max_value=180)
     file_video = st.file_uploader("Upload Image", type=['mp4', 'mov'])
     temp=tempfile.NamedTemporaryFile(delete=False)
     button = st.button("Process")
@@ -50,14 +63,29 @@ def app():
             temp.write(file_video.read())
             vid=cv2.VideoCapture(temp.name)
 
-            while vid.isOpened():
-                ret, frame = vid.read()
-                detection_image, angle = detection(frame, nums_pos[detection_on])
-                k = 4
-                width = int((frame.shape[1]) / k)
-                height = int((frame.shape[0]) / k)
-                scaled = cv2.resize(detection_image, (width, height), interpolation=cv2.INTER_AREA)
-                stframe.image(scaled, channels='BGR', use_column_width=True)
+            try:
+                while vid.isOpened():
+                    ret, frame = vid.read()
+                    detection_image, angle = detection(frame, nums_pos[detection_on])
+                    if angle>e_ang:
+                        continue
+                    if max_ang==0 and min_ang==0:
+                        max_ang=angle
+                        min_ang=angle
+                    if max_ang<angle:
+                        max_ang=angle
+                    if min_ang>angle:
+                        min_ang=angle
+                    img=addtext(detection_image,"Max angel : {} and Min angel : {} ".format(max_ang, min_ang))
+                    k = 4
+                    width = int((frame.shape[1]) / k)
+                    height = int((frame.shape[0]) / k)
+                    scaled = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
+                    stframe.image(scaled, channels='BGR', use_column_width=True)
+
+            except:
+                st.write("Done Processing")
+            st.write("Max angel : {}° and Min angel : {}° ".format(max_ang, min_ang))
             vid.release()
 
 

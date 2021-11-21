@@ -5,7 +5,7 @@ import os
 
 
 class poseDetector():
-    def __init__(self, mode= True,segment=True, smooth= True, detectionCon=0.5, trackCon=0.5):
+    def __init__(self, mode= True,segment=False, smooth= False, detectionCon=0.4, trackCon=0):
         self.mode=mode
         self.segment=segment
         self.smooth=smooth
