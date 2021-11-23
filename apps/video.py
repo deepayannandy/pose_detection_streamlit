@@ -4,13 +4,25 @@ import numpy as np
 import pose_module as pm
 from PIL import Image
 import tempfile
+import datetime
+import pytz
+import os
+import base64
+tz_In = pytz.timezone('Asia/Kolkata')
+time = datetime.datetime.now(tz_In)
+base_path=os.getcwd()
 
 detector=pm.poseDetector(mode=False)
+def get_binary_file_downloader_html(bin_file, file_label='File'):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    bin_str = base64.b64encode(data).decode()
+    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download {file_label}</a>'
+    return href
 def addtext(image,text):
     h,w,_=image.shape
     font = cv2.FONT_HERSHEY_SIMPLEX
     org = (20, w-int(w*.5))
-    print(org)
     fontScale = int(w*.001)
     if fontScale<1:
         fontScale=1
@@ -60,9 +72,15 @@ def app():
         if not file_video:
             st.text("No video Selected")
         else:
+            st.header("We are processing the video please wait!")
             temp.write(file_video.read())
             vid=cv2.VideoCapture(temp.name)
-
+            frame_width = int(vid.get(3))
+            frame_height = int(vid.get(4))
+            filename=base_path+'/videos/'+time.strftime("%I-%M-%s-%d-%m-%y")+'.mp4'
+            size = (frame_width, frame_height)
+            writer = cv2.VideoWriter(filename,cv2.VideoWriter_fourcc(*'mp4v'),20, size)
+            print(filename,size)
             try:
                 while vid.isOpened():
                     ret, frame = vid.read()
@@ -80,12 +98,16 @@ def app():
                     k = 4
                     width = int((frame.shape[1]) / k)
                     height = int((frame.shape[0]) / k)
-                    scaled = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
-                    stframe.image(scaled, channels='BGR', use_column_width=True)
+                    #scaled = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
+                    writer.write(img)
 
             except:
                 st.write("Done Processing")
             st.write("Max angel : {}° and Min angel : {}° ".format(max_ang, min_ang))
+            writer.release()
             vid.release()
+            st.markdown(get_binary_file_downloader_html(filename, 'Video'), unsafe_allow_html=True)
+            print("completed")
+
 
 
