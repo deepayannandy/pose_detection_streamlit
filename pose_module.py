@@ -60,23 +60,15 @@ class poseDetector():
 
 
 
-def main(file_name):
-    cap = cv2.VideoCapture(file_name)
-    detector=poseDetector()
-    while True:
-        success,img=cap.read()
-        if success:
-            img_get=detector.find_pos(img)
-            lm_list=detector.find_landmark(img)
-            print(lm_list[14])
-        else:
-            pass
-        cv2.imshow('Output', img_get)
-        key = cv2.waitKey(1)
-        if key == ord('q'):
-            break
-    cap.release()
-    cv2.destroyAllWindows()
+def main():
+    path = os.getcwd() + "/videos/" + "img2.jpeg"
+    write_path = os.getcwd() + "/predicted_output/" + "img2.jpg"
+    cap = cv2.imread(path, 1)
+    print(cap.shape)
+    output = poseDetector.find_pos(cap, True)
+    cv2.imwrite(write_path, output)
+    cv2.imshow('Output', output)
+    cv2.waitKey(0)
 
 if __name__ == '__main__':
-    main("/Users/dnymac/PycharmProjects/pose_detection/videos/demo1.mp4")
+    main()

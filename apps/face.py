@@ -1,7 +1,7 @@
 import streamlit as st
 import cv2
 import numpy as np
-import pose_module as pm
+import face_modue as fm
 from PIL import Image
 import os, numpy
 import generate_report as gr
@@ -11,18 +11,18 @@ tz_In = pytz.timezone('Asia/Kolkata')
 time = datetime.datetime.now(tz_In)
 base_path=os.getcwd()
 
-detector=pm.poseDetector()
+detector=fm.FaceMeshDetector(static_image_mode=True)
 logo=cv2.imread(base_path+"/comp_logo/logo0.jpeg")
 def detection(img):
-    img_get = detector.find_pos(img, False)
-    lm_list = detector.find_landmark(img, False)
-    ang=0
-    try:
-        ang = detector.find_angel(img, 16, 14, 12)
-    except:
-        print("Something went wrong")
-        pass
-    return img_get,int(ang)
+    img_get,landmarks = detector.findfaces(img, False)
+    a=landmarks[0]
+    b=landmarks[16]
+    cv2.circle(img, (a[1], a[2]), 6, (255, 0, 255), cv2.FILLED)
+    cv2.circle(img, (b[1], b[2]), 6, (255, 0, 255), cv2.FILLED)
+    cv2.line(img, (a[1], a[2]), (b[1], b[2]), (0, 0, 255), 3)
+    result = ((((b[2] - a[1]) ** 2) + ((b[2] - a[1]) ** 2)) ** 0.5)
+    print(a, b,result)
+    return img_get,result
 def colage(img1, img2):
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
@@ -74,24 +74,21 @@ def app(userdata):
     button= st.button("Process")
     if button:
         try:
-            detection_image1, angle1 = detection(np.array(Image.open(file_image1)))
-            detection_image2, angle2 = detection(np.array(Image.open(file_image2)))
-            if angle1==0:
+            detection_image1, dis1 = detection(np.array(Image.open(file_image1)))
+            detection_image2, dis2 = detection(np.array(Image.open(file_image2)))
+            if dis1==0:
                 st.write("We can not find any detection on Image1")
-            if angle2==0:
+            if dis2==0:
                 st.write("We can not find any detection on Image2")
             else:
                 final_img=colage(addtext(detection_image1,date1),addtext(detection_image2,date2))
                 st.image(final_img)
                 imagepath=base_path +"/collection/" +time.strftime("%I:%M-%d-%m-%y")+".png"
                 cv2.imwrite(imagepath, cv2.cvtColor(final_img, cv2.COLOR_RGB2BGR))
-                a=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date1,angle1,int((angle1/e_ang)*100),e_ang)
-                b=" Generated Angel on {}  is : {} ° or {} % of the expected angel {} ° ".format(date2,angle2,int((angle2/e_ang)*100),e_ang)
-                c=" Overall improvement is: {} %".format(abs(int((angle2/e_ang)*100)-int((angle1/e_ang)*100)))
-                st.write(a)
-                st.write(b)
-                st.write("##"+c)
-                st.markdown(gr.get_report(userdata[2],userdata[5],userdata[3]+" ( "+userdata[4]+") ","Contact: "+userdata[6]+"/ "+userdata[7],pname,sp,choiceS,page,pcontact,detection_on,[a,b,c],imagepath), unsafe_allow_html=True)
+                st.write("Distace between 2 Points in img1: "+str(int(dis1))+" pxl")
+                st.write("Distace between 2 Points in img2: "+str(int(dis2))+" pxl")
+                # st.write("##"+c)
+                # st.markdown(gr.get_report(userdata[2],userdata[5],userdata[3]+" ( "+userdata[4]+") ","Contact: "+userdata[6]+"/ "+userdata[7],pname,sp,choiceS,page,pcontact,detection_on,[a,b,c],imagepath), unsafe_allow_html=True)
         except Exception as e:
             st.write("Something Went Wrong!")
             print(e)
