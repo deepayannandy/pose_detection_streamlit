@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from apps import home,image,video
+from apps import home,image,video,face
 
 import os
 base_path=os.getcwd()
@@ -19,7 +19,7 @@ def getUserData():
     return allUserData
 
 logincread=getUserData()
-menu=["Home","image","video"]
+menu=["Home","Image","Video","Facial"]
 
 
 def main():
@@ -33,14 +33,18 @@ def main():
     for i in logincread:
         if i[0] == username and i[1] == password:
             st.sidebar.success("Login Successful as {}".format(username))
-            if choice == "image":
+            if choice == "Image":
                 image.app(i)
-            elif choice == "video":
+            elif choice == "Video":
                 video.app()
+            elif choice == "Facial":
+                face.app(i)
         elif len(username)<1 or len(username)<1:
             if choice == "image":
                 st.error("Login first in order to use this tool")
             elif choice == "video":
+                st.error("Login first in order to use this tool")
+            elif choice == "Facial":
                 st.error("Login first in order to use this tool")
 
 
