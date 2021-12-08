@@ -62,7 +62,7 @@ def addtext(image,text):
 sex=["Male","Female","Others"]
 def app(userdata):
     userdata=userdata
-    st.header("Physio App: Improvement using Image")
+    st.header("Physio App: Improvement using facial image")
     pname = st.text_input("Patients name")
     choiceS = st.selectbox("Sex", sex)
     page=st.number_input("Expected Age",min_value=5)
