@@ -74,10 +74,9 @@ def addtext(image,text):
     thickness = 4
     image = cv2.putText(image, 'Date:'+str(text), org, font, fontScale, color, thickness, cv2.LINE_AA)
     return image
-detections=['Left elbow','Right elbow','Left knee','Right knee','Left solder','Right solder','Left hip','Right hip']
-nums_pos={'Left elbow':1,'Right elbow':2,'Left knee':3,'right knee':4,'Left solder':5,'Right solder':6,'Left hip':7,'Right hip':8}
+detections=["Right Elbow Flexion","Right Elbow Extension","Left Elbow Flexion","Left Elbow Extension","Right Solder Flexion","Right Solder Extension","Right Solder Abduction","Right Solder Adduction","Left Solder Flexion","Left Solder Extension","Left Solder Abduction","Left Solder Adduction"]
+nums_pos={"Right Elbow Flexion":1,"Right Elbow Extension":2,"Left Elbow Flexion":3,"Left Elbow Extension":4,"Right Solder Flexion":5,"Right Solder Extension":6,"Right Solder Abduction":7,"Right Solder Adduction":8,"Left Solder Flexion":9,"Left Solder Extension":10,"Left Solder Abduction":11,"Left Solder Adduction":12}
 sex=["Male","Female","Others"]
-pose=["Flexion" ,"Externsion" ,"Abduction" ,"Lateral Ritation","Medial rotation"]
 def app(userdata):
     userdata=userdata
     st.header("Physio App: Improvement using Image")
@@ -85,11 +84,7 @@ def app(userdata):
     choiceS = st.selectbox("Sex", sex)
     page=st.number_input("Expected Age",min_value=5)
     pcontact = st.text_input("Patients Contact")
-    detection_on=st.selectbox("Body part",detections)
-    if "elbow" in detection_on:
-        sp = st.selectbox("Pose",pose)
-    else:
-        sp = st.text_input("Pose")
+    detection_on=st.selectbox("Detection Type",detections)
     e_ang=st.number_input("Expected Angel",min_value=1)
     file_image1 = st.file_uploader("Upload Image1",type=['jpeg','jpg','png'])
     date1 = st.date_input('Image1 date')
@@ -115,7 +110,8 @@ def app(userdata):
                 st.write(a)
                 st.write(b)
                 st.write("##"+c)
-                st.markdown(gr.get_report(userdata[2],userdata[5],userdata[3]+" ( "+userdata[4]+") ","Contact: "+userdata[6]+"/ "+userdata[7],pname,sp,choiceS,page,pcontact,detection_on,[a,b,c],imagepath), unsafe_allow_html=True)
+            #     st.markdown(gr.get_report(userdata[2],userdata[5],userdata[3]+" ( "+userdata[4]+") ","Contact: "+userdata[6]+"/ "+userdata[7],pname,sp,choiceS,page,pcontact,detection_on,[a,b,c],imagepath), unsafe_allow_html=True)
+            st.write("Under Development!")
         except Exception as e:
             st.write("Something Went Wrong!")
             print(e)
