@@ -33,17 +33,18 @@ class poseDetector():
             return self.landmark
         except:
             pass
-    def find_angel(self,img,p1,p2,p3,draw=True):
+    def find_angel(self,img,p1,p2,p3,pos,draw=True):
         #get locations
         _, x1, y1  =self.landmark[p1]
         _, x2, y2 = self.landmark[p2]
         _, x3, y3 = self.landmark[p3]
         #calculate angel
-        angel=math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2))
-        if angel < 0:
-            angel += 360
-        if angel > 180:
-            angel = angel - 180
+        angel=abs(math.degrees(math.atan2(y3-y2,x3-x2)-math.atan2(y1-y2,x1-x2)))
+        ## Different pose pre processing
+        if pos == 1:
+            angel = 180 - angel
+        #########################
+
         #draw angel
         if draw:
             cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 4)

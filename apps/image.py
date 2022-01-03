@@ -14,27 +14,30 @@ base_path=os.getcwd()
 detector=pm.poseDetector()
 logo=cv2.imread(base_path+"/comp_logo/logo0.jpeg")
 def detection(img,num):
+    ##pos point refferance#####
+    right_elbow=[16,14,12]
+    left_elbow = [15, 13, 11]
+    right_knee=[28, 26, 24]
+    left_knee=[27, 25, 23]
+    right_soldier=[14,12,24]
+    left_soldier=[13,11,23]
+    right_hip=[26, 24, 12]
+    left_hip=[25, 23, 11]
+    ###########################
     img_get = detector.find_pos(img, False)
     lm_list = detector.find_landmark(img, False)
     ang=0
     try:
         if len(lm_list) != 0:
             if num==1:
-                ang = detector.find_angel(img, 16, 14, 12)
+                ang = detector.find_angel(img, right_elbow[0], right_elbow[1], right_elbow[2],pos=1)
             elif num==2:
-                ang = detector.find_angel(img, 15, 13, 11)
+                ang = detector.find_angel(img, right_elbow[0], right_elbow[1], right_elbow[2],pos=1)
             elif num==3:
-                ang = detector.find_angel(img, 28, 26, 24)
+                ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=1)
             elif num==4:
-                ang = detector.find_angel(img, 27, 25, 23)
-            elif num==5:
-                ang = detector.find_angel(img, 14, 12, 24)
-            elif num==6:
-                ang = detector.find_angel(img, 13, 11, 23)
-            elif num==7:
-                ang = detector.find_angel(img, 26, 24, 12)
-            elif num==8:
-                ang = detector.find_angel(img, 25, 23, 11)
+                ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=1)
+
     except:
         print("Something went wrong")
         pass
@@ -95,6 +98,7 @@ def app(userdata):
         try:
             detection_image1, angle1 = detection(np.array(Image.open(file_image1)), nums_pos[detection_on])
             detection_image2, angle2 = detection(np.array(Image.open(file_image2)), nums_pos[detection_on])
+
             if angle1==0:
                 st.write("We can not find any detection on Image1")
             if angle2==0:
