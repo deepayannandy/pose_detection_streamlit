@@ -43,6 +43,7 @@ class poseDetector():
         ## Different pose pre processing
         if pos == 1:
             angel = 180 - angel
+
         #########################
 
         #draw angel

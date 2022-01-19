@@ -38,21 +38,21 @@ def detection(img,num):
             elif num==4:
                 ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=1)
             elif num==5:
-                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=1)
+                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=2)
             elif num==6:
-                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=1)
+                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=2)
             elif num==7:
-                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=1)
+                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=2)
             elif num==8:
-                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=1)
+                ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=2)
             elif num == 9:
-                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=1)
+                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=2)
             elif num == 10:
-                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=1)
+                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=2)
             elif num == 11:
-                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=1)
+                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=2)
             elif num == 12:
-                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=1)
+                ang = detector.find_angel(img, left_soldier[0], left_soldier[1], left_soldier[2], pos=2)
     except:
         print("Something went wrong")
         pass
