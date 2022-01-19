@@ -32,11 +32,11 @@ def detection(img,num):
             if num==1:
                 ang = detector.find_angel(img, right_elbow[0], right_elbow[1], right_elbow[2],pos=1)
             elif num==2:
-                ang = detector.find_angel(img, right_elbow[0], right_elbow[1], right_elbow[2],pos=1)
+                ang = detector.find_angel(img, right_elbow[0], right_elbow[1], right_elbow[2],pos=2)
             elif num==3:
                 ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=1)
             elif num==4:
-                ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=1)
+                ang = detector.find_angel(img, left_elbow[0], left_elbow[1], left_elbow[2], pos=2)
             elif num==5:
                 ang = detector.find_angel(img, right_soldier[0], right_soldier[1], right_soldier[2], pos=2)
             elif num==6:
